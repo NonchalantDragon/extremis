@@ -22,7 +22,7 @@ function AJAX_JSON_Req( url ) {
     AJAX_req.send();
 }
  
-AJAX_JSON_Req( 'build.json' );
+AJAX_JSON_Req( 'data/build.json' );
 
 function displayJobs(){
 	var displayText = '<h1 class="titleCenter">JOBS!</h1>';
