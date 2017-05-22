@@ -5,3 +5,30 @@
 .resourceFull {
 	color: red;
 }
+
+.addRemoveButtons {
+	font-size: 2em;
+	cursor: pointer;
+	cursor: hand;
+	font-weight: bold;
+}
+
+.centerBlock {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.is-table-row {
+	display: table;
+}
+
+.is-table-row [class*="col-"] {
+	float: none;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.buildingHeader {
+	font-size: 2em;
+	font-weight: bold;
+}

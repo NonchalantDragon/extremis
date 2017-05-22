@@ -5,7 +5,7 @@ var buildingControl;
 var researchBoost = 1;
 var activePage = "default";
 var primaryLoop = setInterval(gameLoop, 1000);
-var addAmount = 1;
+var amountModify = 1;
 
 function AJAX_JSON_Req( url ) {
     var AJAX_req = new XMLHttpRequest();
@@ -24,17 +24,75 @@ function AJAX_JSON_Req( url ) {
  
 AJAX_JSON_Req( 'data/build.json' );
 
+function cheatBuiling(){
+	jQuery.each(buildingControl, function(i, building) {
+		if (building.hasOwnProperty("researchLevel")){
+			buildingControl[building.id].researchLevel = 1;
+			buildingControl[building.id].amount = 1;
+		}
+	});
+	jQuery.each(buildingControl.storage.type, function(i, storage) {
+		if (storage.hasOwnProperty("researchLevel")){
+			buildingControl.storage.type[storage.id].researchLevel = 1;
+			buildingControl.storage.type[storage.id].amount = 1;
+		}
+	});
+	displayPrime();
+	displayResources();
+}
+
 function displayJobs(){
-	var displayText = '<h1 class="titleCenter">JOBS!</h1>';
+	var displayText = '<h1 class="titleCenter">Building Managment</h1>';
+	var currentWorkers = 0;
 	jQuery.each(buildingControl, function(i, building) {
 		if (building.hasOwnProperty("jobs") && building.researchLevel != 0) {
-			displayText += "<h2>" + building.name + " </h2> can support " + (building.supportedPop * building.amount) + " worker(s).<br><b>Workers:</b><br>";
-			jQuery.each(building.jobs, function(x, workers) {
-				
-				displayText += "----------" + workers.name + " : " + workers.amount;
-				displayText += "<a onClick=\"addWorker(\'" + workers.id + "\'," + addAmount + ");\" style=\"cursor: pointer; cursor: hand;\"><b>Add Worker</b></a> <a><b>Remove Worker</b></a><br>";
-
+			
+			displayText += "<div class=\"container-fluid\">";
+			displayText += "<div class=\"row is-table-row\">";
+			displayText += "<div class=\"col-md-3\"><span class=\"buildingHeader\">";
+			displayText += building.name + "</span>: " + building.amount;
+			displayText += "</div>";
+			displayText += "<div class=\"col-md-1 addRemoveButtons\">";
+			displayText += "<a onClick=\"removeBuilding(\'" + building.id + "\'," + amountModify + ");\">-</a> ";
+			displayText += "<a onClick=\"addBuilding(\'" + building.id + "\'," + amountModify + ");\">+</a>";
+			displayText += "</div>";
+			displayText += "<div class=\"col-md-8\">";
+			displayText += "</div>";
+			displayText += "</div>";
+			displayText += "</div>";
+			displayText += building.description + "<br>";
+			
+			
+			
+			
+			
+			
+			displayText += "<div class=\"container-fluid\">";
+			jQuery.each(building.jobs, function(x, workers){
+				currentWorkers += workers.amount;
 			});
+			displayText += "This building is at a research level of <b>" + building.researchLevel + "</br> and has ";
+//			if (((building.supportedPop * building.amount) > currentWorkers) && (building.amount > 1) && )currentWorkers != 1)){
+//				displayText += 
+//			}else if (((building.supportedPop * building.amount) > currentWorkers
+			displayText += "";
+			jQuery.each(building.jobs, function(x, workers) {
+				displayText += "<div class=\"row is-table-row\">";
+				displayText += "<div class=\"col-md-1 addRemoveButtons\">";
+				displayText += "<a onClick=\"removeWorker(\'" + workers.id + "\'," + amountModify + ");\">-</a> ";
+				displayText += "<a onClick=\"addWorker(\'" + workers.id + "\'," + amountModify + ");\">+</a>";
+				displayText += "</div>";
+				displayText += "<div class=\"col-md-3\">";
+				displayText += workers.name + " : " + workers.amount;
+				displayText += "</div>";
+				displayText += "<div class=\"col-md-8\">";
+				displayText += "</div>";
+				displayText += "</div>";
+			});
+			
+			displayText += "</div>";
+			
+			
 			displayText += "</p>"
 			console.log(displayText);
 		}
@@ -142,7 +200,13 @@ function gameLoop() {
 					jQuery.each(buildingControl, function(y, jobSearch){
 						if (jobSearch.hasOwnProperty("jobs")){
 							if (jobSearch.jobs.hasOwnProperty(workers[x])){
-								buildingControl.storage.type[storageBuilding.id].currentStorage += (buildingControl[jobSearch.id].jobs[workers[x]].amount * buildingControl[jobSearch.id].jobs[workers[x]].perCycle);
+								var totalResourceAdd = buildingControl[jobSearch.id].jobs[workers[x]].amount * buildingControl[jobSearch.id].jobs[workers[x]].perCycle;
+								if (buildingControl.storage.type[storageBuilding.id].currentStorage + totalResourceAdd > buildingControl.storage.type[storageBuilding.id].maxStorage){
+									buildingControl.storage.type[storageBuilding.id].currentStorage = buildingControl.storage.type[storageBuilding.id].maxStorage;
+								}else{
+									buildingControl.storage.type[storageBuilding.id].currentStorage += totalResourceAdd;
+								}
+								
 								return false;
 							}
 						}
@@ -152,8 +216,13 @@ function gameLoop() {
 				jQuery.each(buildingControl, function(y, jobSearch){
 					if (jobSearch.hasOwnProperty("jobs")){
 						if (jobSearch.jobs.hasOwnProperty(workers)){
-							buildingControl.storage.type[storageBuilding.id].currentStorage += (buildingControl[jobSearch.id].jobs[workers].amount * buildingControl[jobSearch.id].jobs[workers].perCycle);
-							return false;
+							var totalResourceAdd = buildingControl[jobSearch.id].jobs[workers].amount * buildingControl[jobSearch.id].jobs[workers].perCycle;
+							if (buildingControl.storage.type[storageBuilding.id].currentStorage + totalResourceAdd > buildingControl.storage.type[storageBuilding.id].maxStorage){
+								buildingControl.storage.type[storageBuilding.id].currentStorage = buildingControl.storage.type[storageBuilding.id].maxStorage;
+							}else{
+								buildingControl.storage.type[storageBuilding.id].currentStorage += totalResourceAdd;
+							}							
+								return false;
 						}
 					}
 				});
