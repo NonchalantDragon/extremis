@@ -1,6 +1,5 @@
 {
 	"house": {
-		"id" : "house",
 		"name" : "House",
 		"description" : "A House",
 		"amount" : 2,
@@ -8,7 +7,6 @@
 		"supportedPop" : 5
 	},
 	"mine": {
-		"id" : "mine",
 		"name" : "Mine",
 		"description" : "Minerals and Such",
 		"amount" : 1,
@@ -16,7 +14,6 @@
 		"supportedPop" : 10,
 		"jobs" : {
 			"miner" : {
-				"id" : "miner",
 				"name" : "Miner",
 				"description" : "Diggy Hole",
 				"perCycle" : 1,
@@ -25,7 +22,6 @@
 		}
 	},
 	"lab": {
-		"id" : "lab",
 		"name" : "Laboratory", 
 		"descrpition" : "Do the science stuff",
 		"amount" : 0,
@@ -33,7 +29,6 @@
 		"supportedPop" : 3,
 		"jobs" : {
 			"researcher" : {
-				"id" : "researcher",
 				"name" : "Researcher",
 				"description" : "E=MC^2",
 				"perCycle" : 1,
@@ -42,7 +37,6 @@
 		}
 	},
 	"lodge": {
-		"id" : "lodge",
 		"name" : "Lodge",
 		"description" : "Shared by Hunters and Foresters",
 		"amount" : 1,
@@ -50,14 +44,12 @@
 		"supportedPop" : 10,
 		"jobs" : {
 			"forester" : {
-				"id" : "forester",
 				"name" : "Forester",
 				"description" : "Choppin The Trees",
 				"perCycle" : 1,
 				"amount" : 0
 			},
 			"hunter" : {
-				"id" : "hunter",
 				"name" : "Hunter",
 				"description" : "Going for Bambi!",
 				"perCycle" : 1,
@@ -66,7 +58,6 @@
 		}
 	},
 	"farm": {
-		"id" : "farm",
 		"name" : "Farm",
 		"description" : "Get your food on!",
 		"amount" : 0,
@@ -74,7 +65,6 @@
 		"supportedPop" : 10,
 		"jobs" : {
 			"farmer" : {
-				"id" : "farmer",
 				"name" : "Farmer",
 				"description" : "Making the food",
 				"perCycle" : 1,
@@ -83,7 +73,6 @@
 		}
 	},
 	"lumberMill": {
-		"id" : "lumbermill",
 		"name" : "Lumber Mill",
 		"description" : "Turn your raw wood into planks",
 		"amount" : 0,
@@ -91,7 +80,6 @@
 		"supportedPop" : 5,
 		"jobs" : {
 			"carpenter" : {
-				"id" : "carpenter",
 				"name" : "Carpenter",
 				"description" : "Works with wood.",
 				"perCycle" : 1,
@@ -100,7 +88,6 @@
 		}
 	},
 	"kitchen": {
-		"id" : "kitchen",
 		"name" : "Kitchen",
 		"description" : "Raw Food is bad for you",
 		"amount" : 0,
@@ -108,7 +95,6 @@
 		"supportedPop" : 5,
 		"jobs" : {
 			"chef" : {
-				"id" : "chef",
 				"name" : "Chef",
 				"description" : "Works with wood.",
 				"perCycle" : 1,
@@ -117,7 +103,6 @@
 		}
 	},
 	"masonry": {
-		"id" : "masonry",
 		"name" : "Masonry",
 		"description" : "Raw Stone to Blocks",
 		"amount" : 0,
@@ -125,7 +110,6 @@
 		"supportedPop" : 3,
 		"jobs" : {
 			"mason" : {
-				"id" : "mason",
 				"name" : "Mason",
 				"description" : "Works with stone",
 				"perCycle" : 1,
@@ -134,7 +118,6 @@
 		}
 	},
 	"textile": {
-		"id" : "textile",
 		"name" : "Textile Factoru",
 		"description" : "Make Clothes",
 		"amount" : 0,
@@ -142,7 +125,6 @@
 		"supportedPop" : 3,
 		"jobs" : {
 			"tailor" : {
-				"id" : "tailor",
 				"name" : "Tailor",
 				"description" : "Makes clothes",
 				"perCycle" : 1,
@@ -151,13 +133,11 @@
 		}
 	},
 	"storage": {
-		"id" : "storage",
 		"name" : "Storage Container",
 		"description" : "You should not be seeing this",
 		"amount" : 3,
 		"type" : {
 			"wood" : {
-				"id" : "wood",
 				"name" : "Wood",
 				"description" : "Stores Wood",
 				"maxStorage" : 100,
@@ -167,7 +147,6 @@
 				"worker" : "forester"
 			},
 			"stone" : {
-				"id" : "stone",
 				"name" : "Stone",
 				"description" : "Stores Stone",
 				"maxStorage" : 100,
@@ -177,7 +156,6 @@
 				"worker" : "miner"
 			},
 			"foodRaw" : {
-				"id" : "foodRaw",
 				"name" : "(Raw)Food",
 				"description" : "Keeps your unprepared food.",
 				"maxStorage" : 100,
@@ -187,7 +165,6 @@
 				"worker" : "hunter^farmer"
 			},
 			"foodCooked" : {
-				"id" : "foodCooked",	
 				"name" : "(Cooked)Food",
 				"description" : "Prepared Food",
 				"maxStorage" : 100,
@@ -197,7 +174,6 @@
 				"worker" : "chef"
 			},
 			"plank" : {
-				"id" : "plank",
 				"name" : "Planks",
 				"description" : "Stores Planks",
 				"maxStorage" : 50,
@@ -207,7 +183,6 @@
 				"worker" : "carpenter"
 			},
 			"brick" : {
-				"id" : "brick",
 				"name" : "Bricks",
 				"description" : "Stores Bricks",
 				"maxStorage" : 50,

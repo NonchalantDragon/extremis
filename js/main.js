@@ -25,16 +25,16 @@ function AJAX_JSON_Req( url ) {
 AJAX_JSON_Req( 'data/build.json' );
 
 function cheatBuiling(){
-	jQuery.each(buildingControl, function(i, building) {
+	jQuery.each(buildingControl, function(id, building) {
 		if (building.hasOwnProperty("researchLevel")){
-			buildingControl[building.id].researchLevel = 1;
-			buildingControl[building.id].amount = 1;
+			buildingControl[id].researchLevel = 1;
+			buildingControl[id].amount = 1;
 		}
 	});
-	jQuery.each(buildingControl.storage.type, function(i, storage) {
+	jQuery.each(buildingControl.storage.type, function(id, storage) {
 		if (storage.hasOwnProperty("researchLevel")){
-			buildingControl.storage.type[storage.id].researchLevel = 1;
-			buildingControl.storage.type[storage.id].amount = 1;
+			buildingControl.storage.type[id].researchLevel = 1;
+			buildingControl.storage.type[id].amount = 1;
 		}
 	});
 	displayPrime();
@@ -44,7 +44,7 @@ function cheatBuiling(){
 function displayJobs(){
 	var displayText = '<h1 class="titleCenter">Building Managment</h1>';
 	var currentWorkers = 0;
-	jQuery.each(buildingControl, function(i, building) {
+	jQuery.each(buildingControl, function(bi, building) {
 		if (building.hasOwnProperty("jobs") && building.researchLevel != 0) {
 			
 			displayText += "<div class=\"container-fluid\">";
@@ -53,8 +53,8 @@ function displayJobs(){
 			displayText += building.name + "</span>: " + building.amount;
 			displayText += "</div>";
 			displayText += "<div class=\"col-md-1 addRemoveButtons\">";
-			displayText += "<a onClick=\"removeBuilding(\'" + building.id + "\'," + amountModify + ");\">-</a> ";
-			displayText += "<a onClick=\"addBuilding(\'" + building.id + "\'," + amountModify + ");\">+</a>";
+			displayText += "<a onClick=\"removeBuilding(\'" + bi + "\'," + amountModify + ");\">-</a> ";
+			displayText += "<a onClick=\"addBuilding(\'" + bi + "\'," + amountModify + ");\">+</a>";
 			displayText += "</div>";
 			displayText += "<div class=\"col-md-8\">";
 			displayText += "</div>";
@@ -68,7 +68,7 @@ function displayJobs(){
 			
 			
 			displayText += "<div class=\"container-fluid\">";
-			jQuery.each(building.jobs, function(x, workers){
+			jQuery.each(building.jobs, function(i, workers){
 				currentWorkers += workers.amount;
 			});
 			displayText += "This building is at a research level of <b>" + building.researchLevel + "</br> and has ";
@@ -76,11 +76,11 @@ function displayJobs(){
 //				displayText += 
 //			}else if (((building.supportedPop * building.amount) > currentWorkers
 			displayText += "";
-			jQuery.each(building.jobs, function(x, workers) {
+			jQuery.each(building.jobs, function(wi, workers) {
 				displayText += "<div class=\"row is-table-row\">";
 				displayText += "<div class=\"col-md-1 addRemoveButtons\">";
-				displayText += "<a onClick=\"removeWorker(\'" + workers.id + "\'," + amountModify + ");\">-</a> ";
-				displayText += "<a onClick=\"addWorker(\'" + workers.id + "\'," + amountModify + ");\">+</a>";
+				displayText += "<a onClick=\"removeWorker(\'" + wi + "\'," + amountModify + ");\">-</a> ";
+				displayText += "<a onClick=\"addWorker(\'" + wi + "\'," + amountModify + ");\">+</a>";
 				displayText += "</div>";
 				displayText += "<div class=\"col-md-3\">";
 				displayText += workers.name + " : " + workers.amount;
@@ -145,7 +145,7 @@ function addWorker(worker, toAdd){
 	var availPop = 0;
 	var totalWorkers = 0;
 	
-	jQuery.each(buildingControl, function(i, building) {
+	jQuery.each(buildingControl, function(bi, building) {
 
 		if (building.hasOwnProperty("jobs")) {
 			if(building["jobs"].hasOwnProperty(worker)){
@@ -154,7 +154,7 @@ function addWorker(worker, toAdd){
 						totalWorkers += sharedJobs["amount"];
 					});
 				} else totalWorkers = building["jobs"][worker]["amount"];
-				buildingKey = building["id"];
+				buildingKey = bi;
 				return false;
 			}
 		}
@@ -191,20 +191,20 @@ function test(){
 function gameLoop() {
 	displayResources();
 
-	jQuery.each(buildingControl.storage.type, function(i, storageBuilding) {
+	jQuery.each(buildingControl.storage.type, function(si, storageBuilding) {
 		if (storageBuilding.researchLevel !=0){
 			var workerStorage = storageBuilding.worker;
 			var workers = workerStorage.split('^');
 			if (workers.length > 1) {
 				for (x = 0; x < workers.length - 1; x++){
-					jQuery.each(buildingControl, function(y, jobSearch){
+					jQuery.each(buildingControl, function(ji, jobSearch){
 						if (jobSearch.hasOwnProperty("jobs")){
 							if (jobSearch.jobs.hasOwnProperty(workers[x])){
-								var totalResourceAdd = buildingControl[jobSearch.id].jobs[workers[x]].amount * buildingControl[jobSearch.id].jobs[workers[x]].perCycle;
-								if (buildingControl.storage.type[storageBuilding.id].currentStorage + totalResourceAdd > buildingControl.storage.type[storageBuilding.id].maxStorage){
-									buildingControl.storage.type[storageBuilding.id].currentStorage = buildingControl.storage.type[storageBuilding.id].maxStorage;
+								var totalResourceAdd = buildingControl[ji].jobs[workers[x]].amount * buildingControl[ji].jobs[workers[x]].perCycle;
+								if (buildingControl.storage.type[si].currentStorage + totalResourceAdd > buildingControl.storage.type[si].maxStorage){
+									buildingControl.storage.type[si].currentStorage = buildingControl.storage.type[si].maxStorage;
 								}else{
-									buildingControl.storage.type[storageBuilding.id].currentStorage += totalResourceAdd;
+									buildingControl.storage.type[si].currentStorage += totalResourceAdd;
 								}
 								
 								return false;
@@ -213,14 +213,14 @@ function gameLoop() {
 					});
 				} 
 			} else {
-				jQuery.each(buildingControl, function(y, jobSearch){
+				jQuery.each(buildingControl, function(ji, jobSearch){
 					if (jobSearch.hasOwnProperty("jobs")){
 						if (jobSearch.jobs.hasOwnProperty(workers)){
-							var totalResourceAdd = buildingControl[jobSearch.id].jobs[workers].amount * buildingControl[jobSearch.id].jobs[workers].perCycle;
-							if (buildingControl.storage.type[storageBuilding.id].currentStorage + totalResourceAdd > buildingControl.storage.type[storageBuilding.id].maxStorage){
-								buildingControl.storage.type[storageBuilding.id].currentStorage = buildingControl.storage.type[storageBuilding.id].maxStorage;
+							var totalResourceAdd = buildingControl[ji].jobs[workers].amount * buildingControl[ji].jobs[workers].perCycle;
+							if (buildingControl.storage.type[si].currentStorage + totalResourceAdd > buildingControl.storage.type[si].maxStorage){
+								buildingControl.storage.type[si].currentStorage = buildingControl.storage.type[si].maxStorage;
 							}else{
-								buildingControl.storage.type[storageBuilding.id].currentStorage += totalResourceAdd;
+								buildingControl.storage.type[si].currentStorage += totalResourceAdd;
 							}							
 								return false;
 						}
