@@ -69,7 +69,7 @@ function displayJobs(){
 			jQuery.each(building.jobs, function(wi, workers) {
 					displayText += "<div class=\"row is-table-row\">";
 						displayText += "<div class=\"col-md-2 addRemoveButtons\">";
-							displayText += "<a onClick=\"modifyWorker(\'" + wi + "\'," + amountModify + ");\">-</a> ";
+							displayText += "<a onClick=\"modifyWorker(\'" + wi + "\',-" + amountModify + ");\">-</a> ";
 							displayText += "<a onClick=\"modifyWorker(\'" + wi + "\'," + amountModify + ");\">+</a>";
 						displayText += "</div>";
 						displayText += "<div class=\"col-md-10\">";
