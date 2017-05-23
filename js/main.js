@@ -22,9 +22,9 @@ function AJAX_JSON_Req( url ) {
     AJAX_req.send();
 }
  
-AJAX_JSON_Req( 'data/build.json' );
+AJAX_JSON_Req('data/build.json');
 
-function cheatBuiling(){
+function cheatBuilding(){
 	jQuery.each(buildingControl, function(id, building) {
 		if (building.hasOwnProperty("researchLevel")){
 			buildingControl[id].researchLevel = 1;
@@ -36,67 +36,74 @@ function cheatBuiling(){
 			buildingControl.storage.type[id].researchLevel = 1;
 			buildingControl.storage.type[id].amount = 1;
 		}
-	});
+	}); 
 	displayPrime();
 	displayResources();
 }
 
 function displayJobs(){
-	var displayText = '<h1 class="titleCenter">Building Managment</h1>';
+	var displayText = '<h1 class="titleCenter">Worker Managment</h1>';
 	var currentWorkers = 0;
+	var buildingCount = 0;
+	
+
+
+
+
+	displayText += "<div class=\"container-fluid\">";
+		displayText += "<div class=\"row is-table-row\">";
+			displayText += "<div class=\"col-md-4\">";
 	jQuery.each(buildingControl, function(bi, building) {
 		if (building.hasOwnProperty("jobs") && building.researchLevel != 0) {
-			
-			displayText += "<div class=\"container-fluid\">";
-			displayText += "<div class=\"row is-table-row\">";
-			displayText += "<div class=\"col-md-3\"><span class=\"buildingHeader\">";
-			displayText += building.name + "</span>: " + building.amount;
-			displayText += "</div>";
-			displayText += "<div class=\"col-md-1 addRemoveButtons\">";
-			displayText += "<a onClick=\"removeBuilding(\'" + bi + "\'," + amountModify + ");\">-</a> ";
-			displayText += "<a onClick=\"addBuilding(\'" + bi + "\'," + amountModify + ");\">+</a>";
-			displayText += "</div>";
-			displayText += "<div class=\"col-md-8\">";
-			displayText += "</div>";
-			displayText += "</div>";
-			displayText += "</div>";
-			displayText += building.description + "<br>";
-			
-			
-			
-			
-			
-			
-			displayText += "<div class=\"container-fluid\">";
-			jQuery.each(building.jobs, function(i, workers){
-				currentWorkers += workers.amount;
-			});
-			displayText += "This building is at a research level of <b>" + building.researchLevel + "</br> and has ";
-//			if (((building.supportedPop * building.amount) > currentWorkers) && (building.amount > 1) && )currentWorkers != 1)){
-//				displayText += 
-//			}else if (((building.supportedPop * building.amount) > currentWorkers
-			displayText += "";
+				displayText += "<div class=\"container-fluid\">";
+					displayText += "<div class=\"row is-table-row\">";
+						displayText += "<div class=\"col-md-2 addRemoveButtons\">";
+							displayText += "<a onClick=\"modifyBuilding(\'" + bi + "\',-" + amountModify + ");\">-</a> ";
+							displayText += "<a onClick=\"modifyBuilding(\'" + bi + "\'," + amountModify + ");\">+</a>";
+						displayText += "</div>";
+						displayText += "<div class=\"col-md-10 buildingHeader\">";
+							displayText += building.name;
+							displayText += "(" + building.amount + ")";
+						displayText += "</div>";	
+					displayText += "</div>";		
 			jQuery.each(building.jobs, function(wi, workers) {
-				displayText += "<div class=\"row is-table-row\">";
-				displayText += "<div class=\"col-md-1 addRemoveButtons\">";
-				displayText += "<a onClick=\"removeWorker(\'" + wi + "\'," + amountModify + ");\">-</a> ";
-				displayText += "<a onClick=\"addWorker(\'" + wi + "\'," + amountModify + ");\">+</a>";
-				displayText += "</div>";
-				displayText += "<div class=\"col-md-3\">";
-				displayText += workers.name + " : " + workers.amount;
-				displayText += "</div>";
-				displayText += "<div class=\"col-md-8\">";
-				displayText += "</div>";
-				displayText += "</div>";
+					displayText += "<div class=\"row is-table-row\">";
+						displayText += "<div class=\"col-md-2 addRemoveButtons\">";
+							displayText += "<a onClick=\"modifyWorker(\'" + wi + "\'," + amountModify + ");\">-</a> ";
+							displayText += "<a onClick=\"modifyWorker(\'" + wi + "\'," + amountModify + ");\">+</a>";
+						displayText += "</div>";
+						displayText += "<div class=\"col-md-10\">";
+							displayText += workers.name + "(";
+							displayText += workers.amount + ")";
+						displayText += "</div>";	
+					displayText += "</div>";
+				displayText += "</div>";						
 			});
-			
 			displayText += "</div>";
-			
-			
-			displayText += "</p>"
-			console.log(displayText);
+			buildingCount += 1;
+			if (buildingCount == 3){
+		displayText += "</div>";
+		displayText += "<div class=\"row is-table-row\">"
+			displayText += "<div class=\"col-md-4\">"
+					buildingCount = 0;				
+			} else {
+			displayText += "<div class=\"col-md-4\">";	
+			}
 		}
 	});
+	switch(buildingCount){
+		case 1:
+			displayText += "<div class=\"col-md-8\">";
+			displayText += "</div>";
+		displayText += "</div>";
+		break;
+		case 2:
+			displayText += "<div class=\"col-md-8\">";
+			displayText += "</div>";
+		displayText += "</div>";
+		break;
+	}
+	displayText += "</div>";		
 
 	document.getElementById('prime').innerHTML = displayText;
 
@@ -140,31 +147,49 @@ function menuClick(pageActivation){
 	displayPrime();
 }
 
-function addWorker(worker, toAdd){
-	var buildingKey = "";
-	var availPop = 0;
-	var totalWorkers = 0;
-	
-	jQuery.each(buildingControl, function(bi, building) {
+/* modifyWorker() - TODO:
 
-		if (building.hasOwnProperty("jobs")) {
-			if(building["jobs"].hasOwnProperty(worker)){
-				if (Object.keys(building).length > 1){
-					jQuery.each(building["jobs"], function(x, sharedJobs){
-						totalWorkers += sharedJobs["amount"];
+	population controls need to be put in place, after this 
+	modifyWorker needs to change the population total and not add workers when
+	no population is actually present.
+
+
+
+*/
+function modifyWorker(worker, toChange){
+	var buildingKey = ""; //holds the building index for later modfcation
+	var totalWorkers = 0; //used if there is more then one worker keyed to a building.
+	
+	jQuery.each(buildingControl, function(bi, building) {  //steps through each building in the buildingControl Object
+
+		if (building.hasOwnProperty("jobs")) { 				//tests to see if the current building has any jobs keyed to it.
+			if(building.jobs.hasOwnProperty(worker)){		//tests to see if the any of the jobs for that building are the worker we are looking for
+				if (Object.keys(building).length > 1){		//tests to see if the building shares its space among more then one worker type.
+					jQuery.each(building.jobs, function(x, sharedJobs){ //if the building has more then one job it pull steps through each one of them adding it to total jobs of the building
+						totalWorkers += sharedJobs.amount;
 					});
-				} else totalWorkers = building["jobs"][worker]["amount"];
-				buildingKey = bi;
-				return false;
+				} else {
+					totalWorkers = building.jobs[worker].amount; //if one job just grabs that jobs total workers.
+				}					
+				buildingKey = bi; 									//stores the index of the building that we want to add or remove the worker from
+				return false; // building was found so no need to keep the loop goinging.
 			}
 		}
 	});
 	
-	if (buildingControl[buildingKey]["supportedPop"] < (totalWorkers + toAdd))
-		toAdd = buildingControl[buildingKey]["supportedPop"] - totalWorkers;
 	
-	buildingControl[buildingKey]["jobs"][worker]["amount"] += toAdd;
-	displayPrime();
+	//checks lower and upper limits and modifys toChange accordingly
+	
+	if (buildingControl[buildingKey].supportedPop < (totalWorkers + toChange)){
+		toChange = buildingControl[buildingKey].supportedPop - totalWorkers;
+	} else if ((totalWorkers + toChange) < 0){
+		toChange = 0 - buildingControl[buildingKey].jobs[worker].amount;
+	};
+	
+	
+	
+	buildingControl[buildingKey].jobs[worker].amount += toChange;  //modifys amount vaulue
+	displayPrime();  //repopulates the primesection of the webcode and redraws it.
 	
 }
 
