@@ -42,7 +42,7 @@ function cheatBuilding(){
 }
 
 function displayJobs(){
-	var displayText = '<h1 class="titleCenter">Worker Managment</h1>';
+	var displayText = '<h1 class="titleCenter">Building Managment</h1>';
 	var currentWorkers = 0;
 	var buildingCount = 0;
 	
@@ -53,6 +53,8 @@ function displayJobs(){
 	displayText += "<div class=\"container-fluid\">";
 		displayText += "<div class=\"row is-table-row\">";
 			displayText += "<div class=\"col-md-4\">";
+			
+/*			
 	jQuery.each(buildingControl, function(bi, building) {
 		if (building.hasOwnProperty("jobs") && building.researchLevel != 0) {
 				displayText += "<div class=\"container-fluid\">";
@@ -91,6 +93,7 @@ function displayJobs(){
 			}
 		}
 	});
+	*/
 	switch(buildingCount){
 		case 1:
 			displayText += "<div class=\"col-md-8\">";
